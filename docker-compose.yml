@@ -1,0 +1,29 @@
+version: '3.9'
+
+services:
+  php-env:
+    build: .
+    volumes:
+    - ./src:/var/www/html
+    ports:
+    - 80:80
+
+  mysql_db:
+    image: mysql:latest
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    volumes:
+      - ./init:/docker-entrypoint-initdb.d
+
+  phpmyadmin:
+    image: phpmyadmin:latest
+    restart: always
+    ports:
+      - 9001:80
+    environment:
+      - PMA_ARBITRARY=1
