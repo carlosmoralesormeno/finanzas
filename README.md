@@ -4,6 +4,6 @@ Sistema de Finanzas
 1.0
 Carlos Morales
 
-## Ejecución
+## Compose
 
-docker-compose up
+docker-compose up --build
