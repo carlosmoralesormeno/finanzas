@@ -2,12 +2,12 @@
 
 class ModelController {
 
-	public function many($query,$aclass){
+	public function many($query){
 		$cnt 	= 0;
 		$array 	= array();
 
 		while($r = $query->fetch_array()){
-			$array[$cnt] = new $aclass;
+			$array[$cnt] = new stdClass();
 			$cnt2 =	1;
 			foreach ($r as $key => $v) {
 				if($cnt2>0 && $cnt2%2==0){ 
@@ -17,14 +17,13 @@ class ModelController {
 			}
 			$cnt++;
 		}
-
 		return $array;
 	}
 
-	public function one($query,$aclass){
+	public function one($query){
 		$cnt 	= 0;
 		$found 	= null;
-		$data 	= new $aclass;
+		$data 	= new stdClass();
 		while($r = $query->fetch_array()){
 			$cnt = 1;
 			foreach ($r as $key => $v) {
@@ -35,7 +34,6 @@ class ModelController {
 			}
 			
 			$found = $data;
-			break;
 		}
 		return $found;
 	}

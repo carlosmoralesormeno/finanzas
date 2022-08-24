@@ -25,6 +25,7 @@ class Database {
         if (!$connect->connect_error) {
             return $connect;
         }else{
+			echo 'Error en la conexión a la base de datos';
             exit();
         }
 	}

@@ -7,12 +7,8 @@ require_once 'controller/ModelController.php';
 abstract class AbstractClassModel implements InterfaceModel{
 
 	abstract public function table();
-	abstract public function class();
-
-	private $class;
 
     public function __Construct(){
-		$this->class 	= $this->class();
 		$this->executor	= new ExecutorController(); 
 		$this->model 	= new ModelController(); 
 		$this->function = new Functions(); 
@@ -48,7 +44,7 @@ abstract class AbstractClassModel implements InterfaceModel{
         }
         $sql 	= "SELECT * FROM {$table} {$filter}";
 		$query 	= $this->executor->doit($sql);
-		return 	$this->model->Many($query[0],new $this->class());
+		return 	$this->model->Many($query[0]);
     }
 
 	public function One($id = 0, $filter = NULL) {
@@ -58,6 +54,6 @@ abstract class AbstractClassModel implements InterfaceModel{
         }
 		$sql 	= "SELECT * FROM {$table} WHERE id = {$id} {$filter}";
 		$query 	= $this->executor->doit($sql);
-		return 	$this->model->one($query[0],new $this->class());
+		return 	$this->model->one($query[0]);
     }
 }
