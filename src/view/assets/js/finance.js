@@ -30,6 +30,7 @@ function ajax_save(view, form, action, ajax) {
             dataType: 'json',
             type: 'post',
             success: function (data) {
+                console.log(data);
                 if (data) {
                     ajax_reload_page(ajax);
                 }
@@ -45,6 +46,8 @@ function ajax_save(view, form, action, ajax) {
 
 function ajax_get(view, action, id) {
 
+    console.log('Hola');
+
     let params = {
         'view': view,
         'action': action,
@@ -57,6 +60,7 @@ function ajax_get(view, action, id) {
             url: 'index.php?view=' + view + '&action=' + action + '&datatype=json&id=' + id,
             type: 'get',
             success: function (data) {
+                console.log(data);
                 $('#id').val(data.attributes[0].id);
                 $('#date').val(data.attributes[0].date);
                 $('#type').val(data.attributes[0].type);

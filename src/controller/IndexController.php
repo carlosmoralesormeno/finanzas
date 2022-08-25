@@ -1,12 +1,14 @@
-<?php 
+<?php
+require_once('controller/AbstractClassController.php');
 
-class IndexController{
-	public $page_title;
-	public $view;
-	public $Entity;
+class IndexController extends AbstractClassController {
 
-	public function __construct() {
-		$this->view = 'show';
+	public function entity() {
+        return 'Index'; 
+    }
+
+	public function data() {
+		//data
 	}
 
 	public function index(){

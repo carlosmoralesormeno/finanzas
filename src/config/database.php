@@ -8,9 +8,9 @@ class Database {
 	private $ddbb;
 
 	function __Construct(){
-		$this->host = "mysql_db";
-		$this->user = "user";
-		$this->pass = "1234";
+		$this->host = "localhost";
+		$this->user = "root";
+		$this->pass = "";
 		$this->ddbb = "dbchallenge";
 	}
 
@@ -25,6 +25,7 @@ class Database {
         if (!$connect->connect_error) {
             return $connect;
         }else{
+			echo 'Error en la conexión a la base de datos';
             exit();
         }
 	}

@@ -1,99 +1,32 @@
-<?php 
+<?php
+require_once('controller/AbstractClassController.php');
 
-class FinanceController{
-	public $page_title;
-	public $view;
+class FinanceController extends AbstractClassController {
 
-	public function __construct() {
-		$this->view 	= 'show';
-		$this->Entity 	= 'Finance';
-		require_once 'model/'.$this->Entity.'.php';
-		$this->Model 	= New $this->Entity;
+	public function entity() {
+        return 'Finance'; 
+    }
+
+	public function data() {
+		$date         = $_POST['date'];
+		$type         = $_POST['type'];
+		$value        = $_POST['value'];
+		
+		return array(
+			'date' 	=> $date,
+			'type' 	=> $type,
+			'value' => $value,
+		);
 	}
 
 	public function index(){
 		$finance 	= new FinanceController;
-		$date       = $_GET['date'];
+		$date       = $_GET['date'] ? $_GET['date'] : date('m');
 		if($date){
 			$monthly_transactions 			= $finance->get_monthly_transactions($date, date('Y'));
 			$monthly_transactions_detail 	= $finance->get_monthly_transactions_detail($date, date('Y'));
 			return (object)array('monthly_transactions' => $monthly_transactions, 'monthly_transactions_detail' => $monthly_transactions_detail);
 		}
-	}
-
-	public function save_json(){
-		header('Content-Type: application/json');
-
-		$date         = $_POST['date'];
-		$type         = $_POST['type'];
-		$value        = $_POST['value'];
-		$response_id  = $this->get_id();
-		
-		$data = array(
-			'date' 	=> $date,
-			'type' 	=> $type,
-			'value' => $value,
-		);
-
-		if ($response_id && $data) {
-			$this->Model->Update($data, $response_id);
-		} elseif ($data) {
-			$result = $this->Model->Insert($data);
-		}
-
-		$id = $_POST['id'] ? $_POST['id'] : $result[1];
-
-		$json = [
-            'type' 	=> $this->Entity,
-            'id' 	=> (string) $id,
-            'attributes' => [
-                'date' 	=> $date,
-                'type' 	=> $type,
-                'value' => $value,
-            ],
-            'links'	=> [
-                'self' => 'index.php?view='.$this->Entity.'&action=get_json&datatype=json&id='.$id,
-            ]
-        ];
-
-		echo json_encode($json); 
-	}
-
-	public function get_json(){
-		header('Content-Type: application/json');
-
-		$id  	= $_GET['id'];
-		$data	= $this->one($id);
-		
-
-		$json = [
-            'type' 	=> $this->Entity,
-            'id' 	=> (string) $id,
-            'attributes' => [$data],
-            'links'	=> [
-                'self' => 'index.php?view='.$this->Entity.'&action=get_json&datatype=json&id='.$id,
-            ]
-        ];
-
-		echo json_encode($json); 
-	}
-
-	public function delete_json(){
-		header('Content-Type: application/json');
-
-		$id  	= $_GET['id'];
-		$data	= $this->delete($id);
-		
-		$json = [
-            'type' 	=> $this->Entity,
-            'id' 	=> (string) $id,
-            'attributes' => [$data],
-            'links'	=> [
-                'self' => 'index.php?view='.$this->Entity.'&action=get_json&datatype=json&id='.$id,
-            ]
-        ];
-
-		echo json_encode($json); 
 	}
 
 	public function get_monthly_transactions($month, $year){
@@ -129,24 +62,6 @@ class FinanceController{
 		$filter 	= 'MONTH(date) = '.$month.' AND YEAR(date) = '.$year;
 		return $this->many($filter);
 	}
-
-	public function get_id() {
-        $id = $_POST['id'] ? $_POST['id'] : 0;
-        $response = $id ? $this->one($id) : FALSE;      
-        return $response->id;
-    }
-
-    public function one($id, $filter = NULL) {
-        return $this->Model->One($id, $filter);
-    }
-
-	public function many($filter = NULL) {
-        return $this->Model->All($filter);
-    }
-	
-	public function delete($id = 0, $filter = NULL) {
-        return $this->Model->Delete($id,$filter);
-    }
 
 }
 

@@ -2,6 +2,7 @@
 $data     	= $data_view["data"];
 $months   	= array("Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre");
 $month_now 	= date('m');
+$date       = $_GET['date'] ? $_GET['date'] : date('m');
 ?>
 
 <section class="my-5" id="info">
@@ -30,7 +31,7 @@ $month_now 	= date('m');
 			  <select class="form-control" name="month" id="month" onchange="document.location.href='index.php?view=finance&date='+this.value">
 			  	<?php foreach ($months as $key => $value) :?>
 					<?php if($key + 1 >= 3 && $month_now >= $key + 1): ?>
-						<option value="<?php echo $key + 1 ?>" <?php if($_GET['date'] == $key + 1){echo 'selected';} ?> ><?php echo $value ?></option>
+						<option value="<?php echo $key + 1 ?>" <?php if($date == $key + 1){echo 'selected';} ?> ><?php echo $value ?></option>
 					<?php endif ?>
 				<?php endforeach; ?>
 			  </select>
